@@ -1,0 +1,65 @@
+version: '3'
+
+services:  
+  # image dockerhub - https://hub.docker.com/_/php
+  web:
+    build: ./
+    #dockerfile: Dockerfile
+    image: php:5.6-apache
+    deploy:
+      replicas: 1        
+    restart: always
+    hostname: cn-php
+    container_name: cn-php    
+    volumes:      
+      - ./php-files/:/var/www/html/
+      - ./config/php.ini:/usr/local/etc/php/php.ini
+      - ./config/default.conf:/etc/apache2/sites-available/000-default.conf      
+    ports:
+    - "80:80"
+    networks:
+      - unifique-net  
+
+  # image dockerhub - https://hub.docker.com/_/mariadb/
+  database:
+    image: mariadb:10.3
+    restart: unless-stopped
+    hostname: cn-mariadb
+    container_name: cn-mariadb
+    command:  "--character-set-server=utf8 --collation-server=utf8_general_ci --innodb-use-native-aio=0"
+    environment:
+      MYSQL_DATABASE: unifique_db
+      MYSQL_ROOT_PASSWORD: unifique@2022xxx
+    volumes:
+      - vol_unifique:/var/lib/mysql
+      - ./config/script.sql:/docker-entrypoint-initdb.d/script.sql
+    ports:
+      - "3306:3306"
+    networks:
+      - unifique-net 
+
+  # image dockerhub - https://hub.docker.com/_/phpmyadmin
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    hostname: cn-phpmyadmin
+    container_name: cn-phpmyadmin    
+    environment:
+      PMA_HOST: cn-mariadb
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1   
+      MYSQL_ROOT_PASSWORD: unifique@2022xxx
+    # Ajustar para pegar o maximo de upload dos arquivos  
+    volumes:
+      - ./config/uploads.ini:/usr/local/etc/php/conf.d/php-phpmyadmin.ini
+    ports:
+      - "8080:80"
+    networks:
+      - unifique-net  
+  
+volumes:
+  vol_unifique:
+
+networks:
+  unifique-net:
+    driver: bridge
