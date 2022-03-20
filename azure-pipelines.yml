@@ -17,12 +17,10 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
-    - task: Docker@2
+    - task: DockerCompose@0
       displayName: Build and push an image to container registry
       inputs:
-        command: 'buildAndPush'
-        repository: 'unifique'
-        Dockerfile: '**/Dockerfile'
-        containerRegistry: 'dockerhub'        
-        tags: |
-          $(tag)
+        containerregistrytype: 'Container Registry'
+        dockerRegistryEndpoint: 'dockerhub'
+        dockerComposeFile: '**/docker-compose.yml'
+        action: 'Run a Docker Compose command'
