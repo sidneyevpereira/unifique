@@ -1,6 +1,10 @@
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+# Starter pipeline
+- task: Docker@2
+  inputs:
+    containerRegistry: 'dockerhub'
+    repository: 'unifique'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
 
 trigger:
 - main
@@ -17,10 +21,3 @@ steps:
     echo See https://aka.ms/yaml
   displayName: 'Run a multi-line script'
 
-# Starter pipeline
-- task: Docker@2
-  inputs:
-    containerRegistry: 'dockerhub'
-    repository: 'unifique'
-    command: 'buildAndPush'
-    Dockerfile: '**/Dockerfile'
