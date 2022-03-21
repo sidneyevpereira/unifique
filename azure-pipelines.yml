@@ -20,17 +20,23 @@ stages:
     - task: DockerCompose@0
       displayName: Build services
       inputs:
+        projectName: $(Build.Repository.Name)
         containerregistrytype: 'Container Registry'
         dockerRegistryEndpoint: 'dockerhub'
         dockerComposeFile: '**/docker-compose.yml'
         projectName: $(Build.Repository.Name)
         qualifyImageNames: true
+        additionalImageTags: $(tag)
         action: 'Build services'
+        
     - task: DockerCompose@0
       displayName: Push services
       inputs:
+        projectName: $(Build.Repository.Name)        
         containerregistrytype: 'Container Registry'        
         dockerRegistryEndpoint: 'dockerhub'        
         dockerComposeFile: '**/docker-compose.yml'
-        action: 'Push services'
+        additionalImageTags: $(tag)
+        qualifyImageNames: true
+        action: 'Push services'       
     
