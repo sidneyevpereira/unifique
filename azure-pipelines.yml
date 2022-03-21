@@ -1,11 +1,3 @@
-resources:
-  repositories:
-    - repository: unifique  
-      type: github
-      name: sidneyevpereira/unifique
-      endpoint: unifique    
-      ref: /refs/heads/master
-
 trigger:
 - main
 
