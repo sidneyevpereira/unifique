@@ -17,35 +17,54 @@ stages:
       vmImage: $(vmImageName)    
     steps:    
 
+    #- task: DockerCompose@0
+    #  displayName: Build services
+    #  inputs:
+    #    containerregistrytype: 'Container Registry'
+    #    dockerRegistryEndpoint: 'dockerhub'
+    #    dockerComposeFile: '**/docker-compose.yml'
+    #    dockerComposeFileArgs: 'DOCKER_BUILD_SOURCE='
+    #    projectName: '$(ProjetcName)'        
+    #    additionalImageTags: |
+    #      $(tag)
+    #      latest
+    #    includeSourceTags: true
+    #    includeLatestTag: true        
+    #    action: 'Build services'
+        
+    #- task: DockerCompose@0
+    #  displayName: Push services
+    #  inputs:
+    #    containerregistrytype: 'Container Registry'
+    #    dockerRegistryEndpoint: 'dockerhub'
+    #    dockerComposeFile: '**/docker-compose.yml'
+    #    dockerComposeFileArgs: 'DOCKER_BUILD_SOURCE='
+    #    projectName: '$(ProjetcName)'        
+    #    additionalImageTags: |
+    #      $(tag)
+    #      latest
+    #    includeSourceTags: true
+    #    includeLatestTag: true       
+    #    action: 'Push services'
+      
     - task: DockerCompose@0
       displayName: Build services
       inputs:
-        containerregistrytype: 'Container Registry'
-        dockerRegistryEndpoint: 'dockerhub'
-        dockerComposeFile: '**/docker-compose.yml'
-        dockerComposeFileArgs: 'DOCKER_BUILD_SOURCE='
-        projectName: '$(ProjetcName)'        
-        additionalImageTags: |
-          $(tag)
-          latest
-        includeSourceTags: true
-        includeLatestTag: true        
-        action: 'Build services'
-        
+        action: Build services        
+        dockerComposeFile: docker-compose.yml
+        projectName: $(Build.Repository.Name)
+        qualifyImageNames: true
+        additionalImageTags: $(Build.BuildId) 
+    
     - task: DockerCompose@0
       displayName: Push services
       inputs:
-        containerregistrytype: 'Container Registry'
-        dockerRegistryEndpoint: 'dockerhub'
-        dockerComposeFile: '**/docker-compose.yml'
-        dockerComposeFileArgs: 'DOCKER_BUILD_SOURCE='
-        projectName: '$(ProjetcName)'        
-        additionalImageTags: |
-          $(tag)
-          latest
-        includeSourceTags: true
-        includeLatestTag: true       
-        action: 'Push services'
+        action: Push services
+        dockerComposeFile: docker-compose.yml
+        projectName: $(Build.Repository.Name)
+        qualifyImageNames: true
+        additionalImageTags: $(Build.BuildId)
+
 
 
     
