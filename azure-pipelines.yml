@@ -53,9 +53,14 @@ stages:
         containerregistrytype: 'Azure Container Registry'
         dockerComposeFile: 'docker-compose.yml'
         action: 'Build services'
-        additionalImageTags: '$(Build.BuildId)'
-        arguments: 'docker-compose create --force-recreate'
-    
+        additionalImageTags: '$(Build.BuildId)'        
+    - task: DockerCompose@0
+      inputs:
+        containerregistrytype: 'Container Registry'
+        dockerRegistryEndpoint: 'dockerhub'
+        dockerComposeFile: '**/docker-compose.yml'
+        action: 'Run a Docker Compose command'
+        dockerComposeCommand: 'docker-compose create --force-recreate'    
     - task: DockerCompose@0
       displayName: Push services
       inputs:
