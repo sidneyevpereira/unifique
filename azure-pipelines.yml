@@ -17,7 +17,7 @@ stages:
     - task: DockerCompose@0
       displayName: Build services
       inputs:
-        projectName: $(Build.Repository.Name)
+        #projectName: $(Build.Repository.Name)
         containerregistrytype: 'Container Registry'
         dockerRegistryEndpoint: 'dockerhub'
         dockerComposeFile: '**/docker-compose.yml'        
@@ -29,7 +29,7 @@ stages:
     - task: DockerCompose@0
       displayName: Push services
       inputs:
-        projectName: $(Build.Repository.Name)        
+        #projectName: $(Build.Repository.Name)        
         containerregistrytype: 'Container Registry'        
         dockerRegistryEndpoint: 'dockerhub'        
         dockerComposeFile: '**/docker-compose.yml'
