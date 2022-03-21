@@ -38,5 +38,5 @@ stages:
         additionalImageTags: $(tag)
         qualifyImageNames: true
         action: 'Push services'
-        baseResolveDirectory: 'unifique'      
+        workingDirectory: 'unifique'     
     
