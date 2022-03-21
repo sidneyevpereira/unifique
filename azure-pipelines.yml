@@ -1,10 +1,3 @@
-#resources:
-#  repositories:
-#    - repository: unifique
-#      type: github
-#      endpoint: sidneyevpereira
-#      name: sidneyevpereira/unifique      
-
 trigger:
 - main
 
@@ -22,12 +15,14 @@ stages:
     pool:
       vmImage: $(vmImageName)    
     steps:
+
     - task: DockerCompose@0
       displayName: Build services
       inputs:
         projectName: $(ProjetcName)                 
         containerregistrytype: 'Container Registry'
         dockerRegistryEndpoint: 'dockerhub'
+        dockerComposeFileArgs: 'DOCKER_BUILD_SOURCE='
         dockerComposeFile: '**/docker-compose.yml'        
         additionalImageTags: |
           $(tag)
@@ -36,14 +31,14 @@ stages:
         action: 'Build services'
         buildImages: true
         detached: false
-
         
     - task: DockerCompose@0
       displayName: Push services
       inputs:
         projectName: $(ProjetcName)        
         containerregistrytype: 'Container Registry'        
-        dockerRegistryEndpoint: 'dockerhub'        
+        dockerRegistryEndpoint: 'dockerhub'
+        dockerComposeFileArgs: 'DOCKER_BUILD_SOURCE='        
         dockerComposeFile: '**/docker-compose.yml'
         additionalImageTags: |
           $(tag)
