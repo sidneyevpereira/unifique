@@ -11,7 +11,9 @@ trigger:
 variables:
   vmImageName: 'ubuntu-latest'
   tag: '$(Build.BuildId)'
-  ProjetcName: 'sidneyevpereira/unifique:$(Build.BuildId)'   
+  ProjetcName: 'sidneyevpereira/unifique:$(Build.BuildId)'
+  azureContainerRegistry: docker.io
+  azureSubscriptionEndpoint: sidneyevpereira/unifique   
 
 stages:
 - stage: Build
@@ -32,7 +34,13 @@ stages:
         additionalImageTags: $(tag)
         qualifyImageNames: true        
         action: 'Build services'
-        
+    
+    - task: DockerCompose@0
+      displayName: Container registry login
+      inputs:
+        containerregistrytype: Azure Container Registry
+        azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
+        azureContainerRegistry: $(azureContainerRegistry)      
         
     - task: DockerCompose@0
       displayName: Push services
