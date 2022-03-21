@@ -8,9 +8,6 @@ variables:
   vmImageName: 'ubuntu-latest'
   tag: '$(Build.BuildId)'
 
-pool:
-      vmImage: $(vmImageName)
-      
 stages:
 - stage: Build
   displayName: Build and push stage
@@ -19,7 +16,8 @@ stages:
     displayName: Build
     pool:
       vmImage: $(vmImageName)
-    steps:
+    
+    steps:    
     - task: DockerCompose@0
       displayName: Build and push an image to container registry
       inputs:
