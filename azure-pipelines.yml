@@ -11,9 +11,7 @@ trigger:
 variables:
   vmImageName: 'ubuntu-latest'
   tag: '$(Build.BuildId)'
-  ProjetcName: 'sidneyevpereira/unifique:$(Build.BuildId)'
-  azureContainerRegistry: docker.io
-  azureSubscriptionEndpoint: sidneyevpereira/unifique   
+  ProjetcName: 'sidneyevpereira/unifique:$(Build.BuildId)'  
 
 stages:
 - stage: Build
@@ -33,14 +31,7 @@ stages:
         dockerComposeFile: '**/docker-compose.yml'        
         additionalImageTags: $(tag)
         qualifyImageNames: true        
-        action: 'Build services'
-    
-    - task: DockerCompose@0
-      displayName: Container registry login
-      inputs:
-        containerregistrytype: Azure Container Registry
-        azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
-        azureContainerRegistry: $(azureContainerRegistry)      
+        action: 'Build services'   
         
     - task: DockerCompose@0
       displayName: Push services
@@ -52,5 +43,21 @@ stages:
         additionalImageTags: $(tag)
         qualifyImageNames: true
         action: 'Push services'
-        workingDirectory: 'unifique'     
+
+    #- task: Docker@2
+    #  displayName: Push to ACR2
+    #  inputs:
+    #    command: push
+    #    containerRegistry: 'Container Registry'
+    #    repository: $(ACR_URL2)/test
+    #    tags: |
+    #      $(tag)        
+        
+    - task: Docker@2
+      displayName: Push to DOCKER HUB
+      inputs:
+        containerRegistry: 'Container Registry'
+        repository: 'sidneyevpereira/unifique'
+        command: 'push'
+        tags: '$(tag)'
     
