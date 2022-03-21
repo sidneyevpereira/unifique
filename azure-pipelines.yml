@@ -4,7 +4,7 @@ resources:
       type: github
       endpoint: unifique
       name: sidneyevpereira/unifique
-      ref: 'docker.io/sidneyevpereira/unifique'
+      ref: 'docker.io/sidneyevpereira'
 
 trigger:
 - main
