@@ -1,8 +1,12 @@
+resources:
+  repositories:
+    - repository: unifique  
+      type: github
+      name: sidneyevpereira/unifique
+      endpoint: 
+      
 trigger:
 - main
-
-resources:
-- repo: self
 
 variables:
   vmImageName: 'ubuntu-latest'
