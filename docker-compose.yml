@@ -25,7 +25,7 @@ services:
   database:
     build:
       context: .
-      dockerfile: ./config/Dockerfile-databse        
+      dockerfile: ./config/Dockerfile-database        
     image: sidneyevpereira/unifique:database
     restart: unless-stopped
     hostname: cn-mariadb
