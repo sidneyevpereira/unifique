@@ -2,7 +2,7 @@ resources:
   repositories:
     - repository: unifique
       type: github
-      endpoint: 
+      endpoint: unifique
       name: sidneyevpereira/unifique
       ref: 'docker.io/sidneyevpereira/unifique'
 
