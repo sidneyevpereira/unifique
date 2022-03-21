@@ -60,7 +60,7 @@ stages:
         dockerRegistryEndpoint: 'dockerhub'
         dockerComposeFile: '**/docker-compose.yml'
         action: 'Run a Docker Compose command'
-        dockerComposeCommand: 'docker-compose create --force-recreate'    
+        dockerComposeCommand: 'create --force-recreate'    
     - task: DockerCompose@0
       displayName: Push services
       inputs:
