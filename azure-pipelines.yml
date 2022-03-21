@@ -17,9 +17,11 @@ stages:
     pool:
       vmImage: $(vmImageName)    
     steps:    
-    - task: DockerCompose@0
+    - task: Docker@2
       inputs:
-        containerregistrytype: 'Container Registry'
-        dockerRegistryEndpoint: 'dockerhub'
-        dockerComposeFile: '**/docker-compose.yml'
-        action: 'Run a Docker Compose command'
+        containerRegistry: 'dockerhub'
+        repository: 'unique'
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile'
+    
+    
