@@ -33,25 +33,16 @@ stages:
         qualifyImageNames: true        
         action: 'Build services'   
         
-    - task: DockerCompose@0
-      displayName: Push services
-      inputs:
-        projectName: $(ProjetcName)        
-        containerregistrytype: 'Container Registry'        
-        dockerRegistryEndpoint: 'dockerhub'        
-        dockerComposeFile: '**/docker-compose.yml'
-        additionalImageTags: $(tag)
-        qualifyImageNames: true
-        action: 'Push services'
-
-    #- task: Docker@2
-    #  displayName: Push to ACR2
+    #- task: DockerCompose@0
+    #  displayName: Push services
     #  inputs:
-    #    command: push
-    #    containerRegistry: 'Container Registry'
-    #    repository: $(ACR_URL2)/test
-    #    tags: |
-    #      $(tag)        
+    #    projectName: $(ProjetcName)        
+    #    containerregistrytype: 'Container Registry'        
+    #    dockerRegistryEndpoint: 'dockerhub'        
+    #    dockerComposeFile: '**/docker-compose.yml'
+    #    additionalImageTags: $(tag)
+    #    qualifyImageNames: true
+    #    action: 'Push services' 
         
     - task: Docker@2
       displayName: Push to DOCKER HUB
