@@ -1,11 +1,18 @@
+resources:
+  repositories:
+    - repository: unifique
+      type: github
+      endpoint: 
+      name: sidneyevpereira/unifique
+      ref: 'docker.io/sidneyevpereira/unifique'
+
 trigger:
 - main
 
 variables:
   vmImageName: 'ubuntu-latest'
   tag: '$(Build.BuildId)'
-  ProjetcName: 'sidneyevpereira/unifique:$(Build.BuildId)' 
-  
+  ProjetcName: 'sidneyevpereira/unifique:$(Build.BuildId)'   
 
 stages:
 - stage: Build
