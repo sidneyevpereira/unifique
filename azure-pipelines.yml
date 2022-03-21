@@ -25,12 +25,14 @@ stages:
     - task: DockerCompose@0
       displayName: Build services
       inputs:
-        projectName: $(ProjetcName)         
+        projectName: $(ProjetcName)                 
         containerregistrytype: 'Container Registry'
         dockerRegistryEndpoint: 'dockerhub'
         dockerComposeFile: '**/docker-compose.yml'        
-        additionalImageTags: $(tag)        
-        qualifyImageNames: true        
+        additionalImageTags: |
+          $(tag)
+          latest        
+        qualifyImageNames: false        
         action: 'Build services'
         buildImages: true
         detached: false
@@ -43,7 +45,9 @@ stages:
         containerregistrytype: 'Container Registry'        
         dockerRegistryEndpoint: 'dockerhub'        
         dockerComposeFile: '**/docker-compose.yml'
-        additionalImageTags: $(tag)
+        additionalImageTags: |
+          $(tag)
+          latest
         includeSourceTags: true
         includeLatestTag: true
         qualifyImageNames: true
