@@ -8,6 +8,9 @@ variables:
   vmImageName: 'ubuntu-latest'
   tag: '$(Build.BuildId)'
 
+pool:
+      vmImage: $(vmImageName)
+      
 stages:
 - stage: Build
   displayName: Build and push stage
