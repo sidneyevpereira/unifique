@@ -71,7 +71,3 @@ stages:
         qualifyImageNames: true
         additionalImageTags: $(Build.BuildId)
 
-
-
-    
-
