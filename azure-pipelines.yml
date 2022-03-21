@@ -1,9 +1,9 @@
-resources:
-  repositories:
-    - repository: unifique
-      type: github
-      endpoint: sidneyevpereira
-      name: sidneyevpereira/unifique      
+#resources:
+#  repositories:
+#    - repository: unifique
+#      type: github
+#      endpoint: sidneyevpereira
+#      name: sidneyevpereira/unifique      
 
 trigger:
 - main
