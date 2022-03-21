@@ -4,6 +4,7 @@ trigger:
 variables:
   vmImageName: 'ubuntu-latest'
   tag: '(Build.BuildId)'
+  ProjetcName: 'sidneyevpereira/unifique:$(Build.BuildId)' 
 
 stages:
 - stage: Build
@@ -17,11 +18,11 @@ stages:
     - task: DockerCompose@0
       displayName: Build services
       inputs:
-        #projectName: $(Build.Repository.Name)
+        projectName: $(ProjetcName)         
         containerregistrytype: 'Container Registry'
         dockerRegistryEndpoint: 'dockerhub'
         dockerComposeFile: '**/docker-compose.yml'        
-        #additionalImageTags: $(tag)
+        additionalImageTags: $(tag)
         qualifyImageNames: true        
         action: 'Build services'
         
@@ -29,11 +30,11 @@ stages:
     - task: DockerCompose@0
       displayName: Push services
       inputs:
-        #projectName: $(Build.Repository.Name)        
+        projectName: $(ProjetcName)        
         containerregistrytype: 'Container Registry'        
         dockerRegistryEndpoint: 'dockerhub'        
         dockerComposeFile: '**/docker-compose.yml'
-        #additionalImageTags: $(tag)
+        additionalImageTags: $(tag)
         qualifyImageNames: true
         action: 'Push services'       
     
