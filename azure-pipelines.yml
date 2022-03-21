@@ -31,17 +31,18 @@ stages:
         dockerComposeFile: '**/docker-compose.yml'        
         additionalImageTags: $(tag)        
         qualifyImageNames: true        
-        action: 'Build services'   
+        action: 'Build services'
+        dockerComposeCommand: up   
         
     - task: DockerCompose@0
       displayName: Push services
       inputs:
-        #projectName: $(ProjetcName)        
-        #containerregistrytype: 'Container Registry'        
-        #dockerRegistryEndpoint: 'dockerhub'        
-        #dockerComposeFile: '**/docker-compose.yml'
-        #additionalImageTags: $(tag)
-        #qualifyImageNames: true
+        projectName: $(ProjetcName)        
+        containerregistrytype: 'Container Registry'        
+        dockerRegistryEndpoint: 'dockerhub'        
+        dockerComposeFile: '**/docker-compose.yml'
+        additionalImageTags: $(tag)
+        qualifyImageNames: true
         action: 'Push services' 
     
 
