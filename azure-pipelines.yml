@@ -29,8 +29,7 @@ stages:
     - task: DockerCompose@0
       displayName: Push services
       inputs:
-        containerregistrytype: 'Container Registry'
-        repository: 'unifique'
+        containerregistrytype: 'Container Registry'        
         dockerRegistryEndpoint: 'dockerhub'        
         dockerComposeFile: '**/docker-compose.yml'
         action: 'Push services'
