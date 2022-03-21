@@ -21,7 +21,7 @@ stages:
         containerregistrytype: 'Container Registry'
         dockerRegistryEndpoint: 'dockerhub'
         dockerComposeFile: '**/docker-compose.yml'        
-        additionalImageTags: $(tag)
+        #additionalImageTags: $(tag)
         qualifyImageNames: true        
         action: 'Build services'
         
@@ -33,7 +33,7 @@ stages:
         containerregistrytype: 'Container Registry'        
         dockerRegistryEndpoint: 'dockerhub'        
         dockerComposeFile: '**/docker-compose.yml'
-        additionalImageTags: $(tag)
+        #additionalImageTags: $(tag)
         qualifyImageNames: true
         action: 'Push services'       
     
