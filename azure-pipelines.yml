@@ -23,8 +23,7 @@ stages:
         projectName: $(Build.Repository.Name)
         containerregistrytype: 'Container Registry'
         dockerRegistryEndpoint: 'dockerhub'
-        dockerComposeFile: '**/docker-compose.yml'
-        projectName: $(Build.Repository.Name)
+        dockerComposeFile: '**/docker-compose.yml'        
         qualifyImageNames: true
         additionalImageTags: $(tag)
         action: 'Build services'
