@@ -2,8 +2,7 @@ resources:
   repositories:
     - repository: unifique  
       type: github
-      name: sidneyevpereira/unifique
-      endpoint: 
+      name: sidneyevpereira/unifique     
       
 trigger:
 - main
