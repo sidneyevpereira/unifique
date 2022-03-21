@@ -50,11 +50,11 @@ stages:
     - task: DockerCompose@0
       displayName: Build services
       inputs:
-        action: Build services        
-        dockerComposeFile: docker-compose.yml
-        projectName: $(Build.Repository.Name)
-        qualifyImageNames: true
-        additionalImageTags: $(Build.BuildId) 
+        containerregistrytype: 'Azure Container Registry'
+        dockerComposeFile: 'docker-compose.yml'
+        action: 'Build services'
+        additionalImageTags: '$(Build.BuildId)'
+        arguments: 'docker-compose create --force-recreate'
     
     - task: DockerCompose@0
       displayName: Push services
