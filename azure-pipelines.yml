@@ -4,7 +4,8 @@ trigger:
 variables:
   vmImageName: 'ubuntu-latest'
   tag: '$(Build.BuildId)'
-  ProjetcName: 'sidneyevpereira/unifique:$(Build.BuildId)'  
+  #ProjetcName: 'sidneyevpereira/unifique:$(Build.BuildId)'  
+  ProjetcName: $(Build.Repository.Name)
 
 stages:
 - stage: Build
@@ -45,6 +46,7 @@ stages:
         includeSourceTags: true
         includeLatestTag: true       
         action: 'Push services'
+
 
     
 
