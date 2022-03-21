@@ -28,6 +28,7 @@ stages:
         qualifyImageNames: true        
         action: 'Build services'
         
+        
     - task: DockerCompose@0
       displayName: Push services
       inputs:
