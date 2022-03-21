@@ -26,8 +26,8 @@ stages:
         dockerComposeFileArgs: 'DOCKER_BUILD_SOURCE='
         projectName: '$(ProjetcName)'        
         additionalImageTags: $(tag)          
-        includeSourceTags: true
-        includeLatestTag: true                
+        #includeSourceTags: true
+        #includeLatestTag: true                
         action: 'Build services'
         
     - task: DockerCompose@0
@@ -39,8 +39,8 @@ stages:
         dockerComposeFileArgs: 'DOCKER_BUILD_SOURCE='
         projectName: '$(ProjetcName)'        
         additionalImageTags: $(tag)          
-        includeSourceTags: true
-        includeLatestTag: true       
+        #includeSourceTags: true
+        #includeLatestTag: true       
         action: 'Push services'
       
 
