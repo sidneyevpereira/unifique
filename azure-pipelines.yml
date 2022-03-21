@@ -37,5 +37,6 @@ stages:
         dockerComposeFile: '**/docker-compose.yml'
         additionalImageTags: $(tag)
         qualifyImageNames: true
-        action: 'Push services'       
+        action: 'Push services'
+        baseResolveDirectory: 'unifique'      
     
