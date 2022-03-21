@@ -14,16 +14,7 @@ stages:
     displayName: Build
     pool:
       vmImage: $(vmImageName)    
-    steps:
-    
-    - task: DockerInstaller@0
-      displayName: 'Install Docker 17.09.0-ce'
-    - task: DockerCompose@0
-      displayName: 'Run services'
-      inputs:
-        dockerComposeFile: '**/docker-compose.yml'
-        action: 'Run services'
-        detached: false
+    steps:    
 
     - task: DockerCompose@0
       displayName: Build services
