@@ -25,7 +25,7 @@ stages:
         dockerComposeFile: '**/docker-compose.yml'
         dockerComposeFileArgs: 'DOCKER_BUILD_SOURCE='
         projectName: '$(ProjetcName)'        
-        additionalImageTags: $(tag)          
+        #additionalImageTags: $(tag)          
         #includeSourceTags: true
         #includeLatestTag: true                
         action: 'Build services'
@@ -38,7 +38,7 @@ stages:
         dockerComposeFile: '**/docker-compose.yml'
         dockerComposeFileArgs: 'DOCKER_BUILD_SOURCE='
         projectName: '$(ProjetcName)'        
-        additionalImageTags: $(tag)          
+        #additionalImageTags: $(tag)          
         #includeSourceTags: true
         #includeLatestTag: true       
         action: 'Push services'
