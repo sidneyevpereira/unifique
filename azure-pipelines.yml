@@ -23,13 +23,13 @@ stages:
         dockerRegistryEndpoint: 'dockerhub'
         dockerComposeFile: '**/docker-compose.yml'
         dockerComposeFileArgs: 'DOCKER_BUILD_SOURCE='
-        projectName: '$(ProjetcName)'
-        action: 'Build services'
+        projectName: '$(ProjetcName)'        
         additionalImageTags: |
           $(tag)
           latest
         includeSourceTags: true
-        includeLatestTag: true
+        includeLatestTag: true        
+        action: 'Build services'
         
     - task: DockerCompose@0
       displayName: Push services
@@ -38,13 +38,21 @@ stages:
         dockerRegistryEndpoint: 'dockerhub'
         dockerComposeFile: '**/docker-compose.yml'
         dockerComposeFileArgs: 'DOCKER_BUILD_SOURCE='
-        projectName: '$(ProjetcName)'
-        action: 'Push services'
+        projectName: '$(ProjetcName)'        
         additionalImageTags: |
           $(tag)
           latest
         includeSourceTags: true
-        includeLatestTag: true
-        nopIfNoDockerComposeFile: true
+        includeLatestTag: true       
+        action: 'Push services'
+    
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'dockerhub'
+        repository: 'unifique'
+        command: 'push'
+        tags: |
+          $(tag)
+          latest
     
 
