@@ -15,6 +15,9 @@ stages:
     pool:
       vmImage: $(vmImageName)    
     steps:
+    
+    - task: DockerInstaller@0
+      displayName: 'Install Docker 17.09.0-ce'
 
     - task: DockerCompose@0
       displayName: Build services
