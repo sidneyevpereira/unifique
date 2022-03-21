@@ -24,8 +24,8 @@ stages:
         containerregistrytype: 'Container Registry'
         dockerRegistryEndpoint: 'dockerhub'
         dockerComposeFile: '**/docker-compose.yml'        
-        qualifyImageNames: true
         additionalImageTags: $(tag)
+        qualifyImageNames: true        
         action: 'Build services'
         
     - task: DockerCompose@0
