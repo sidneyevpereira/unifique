@@ -3,8 +3,9 @@ trigger:
 
 variables:
   vmImageName: 'ubuntu-latest'
-  tag: '(Build.BuildId)'
+  tag: '$(Build.BuildId)'
   ProjetcName: 'sidneyevpereira/unifique:$(Build.BuildId)' 
+  
 
 stages:
 - stage: Build
