@@ -19,33 +19,32 @@ stages:
     - task: DockerCompose@0
       displayName: Build services
       inputs:
-        projectName: $(ProjetcName)                 
         containerregistrytype: 'Container Registry'
         dockerRegistryEndpoint: 'dockerhub'
-        dockerComposeFileArgs: 'DOCKER_BUILD_SOURCE='
-        dockerComposeFile: '**/docker-compose.yml'        
-        additionalImageTags: |
-          $(tag)
-          latest        
-        qualifyImageNames: false        
-        action: 'Build services'
-        buildImages: true
-        detached: false
-        
-    - task: DockerCompose@0
-      displayName: Push services
-      inputs:
-        projectName: $(ProjetcName)        
-        containerregistrytype: 'Container Registry'        
-        dockerRegistryEndpoint: 'dockerhub'
-        dockerComposeFileArgs: 'DOCKER_BUILD_SOURCE='        
         dockerComposeFile: '**/docker-compose.yml'
+        dockerComposeFileArgs: 'DOCKER_BUILD_SOURCE='
+        projectName: '$(ProjetcName)'
+        action: 'Build services'
         additionalImageTags: |
           $(tag)
           latest
         includeSourceTags: true
         includeLatestTag: true
-        qualifyImageNames: true
-        action: 'Push services' 
+        
+    - task: DockerCompose@0
+      displayName: Push services
+      inputs:
+        containerregistrytype: 'Container Registry'
+        dockerRegistryEndpoint: 'dockerhub'
+        dockerComposeFile: '**/docker-compose.yml'
+        dockerComposeFileArgs: 'DOCKER_BUILD_SOURCE='
+        projectName: '$(ProjetcName)'
+        action: 'Push services'
+        additionalImageTags: |
+          $(tag)
+          latest
+        includeSourceTags: true
+        includeLatestTag: true
+        nopIfNoDockerComposeFile: true
     
 
