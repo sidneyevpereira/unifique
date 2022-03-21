@@ -32,7 +32,9 @@ stages:
         additionalImageTags: $(tag)        
         qualifyImageNames: true        
         action: 'Build services'
-        buildImages: true   
+        buildImages: true
+        detached: false
+
         
     - task: DockerCompose@0
       displayName: Push services
