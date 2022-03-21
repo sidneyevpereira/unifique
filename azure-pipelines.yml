@@ -15,7 +15,16 @@ stages:
     displayName: Build
     pool:
       vmImage: $(vmImageName)    
-    steps:    
+    steps: 
+
+    - task: DockerCompose@0
+      displayName: Delete old images
+      inputs:
+        containerregistrytype: 'Container Registry'
+        dockerRegistryEndpoint: 'dockerhub'
+        dockerComposeFile: '**/docker-compose.yml'
+        action: 'Run a Docker Compose command'
+        dockerComposeCommand: 'rm -f'
 
     - task: DockerCompose@0
       displayName: Build services
