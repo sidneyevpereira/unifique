@@ -18,12 +18,16 @@ stages:
       vmImage: $(vmImageName)    
     steps:
     - task: DockerCompose@0
+      displayName: Build services
       inputs:
         containerregistrytype: 'Container Registry'
         dockerRegistryEndpoint: 'dockerhub'
         dockerComposeFile: '**/docker-compose.yml'
+        projectName: $(Build.Repository.Name)
+        qualifyImageNames: true
         action: 'Build services'
     - task: DockerCompose@0
+      displayName: Push services
       inputs:
         containerregistrytype: 'Container Registry'
         dockerRegistryEndpoint: 'dockerhub'
