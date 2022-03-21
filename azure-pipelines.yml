@@ -3,7 +3,7 @@ resources:
     - repository: unifique  
       type: github
       name: sidneyevpereira/unifique
-      endpoint: ''    
+      endpoint: 1    
       ref: /refs/heads/master
 
 trigger:
