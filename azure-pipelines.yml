@@ -3,7 +3,7 @@ trigger:
 
 variables:
   vmImageName: 'ubuntu-latest'
-  tag: 'sidneyevpereira/unifique:$(Build.BuildId)'
+  tag: 'unifique/$(Build.BuildId)'
   ProjetcName: 'sidneyevpereira/unifique:$(Build.BuildId)' 
   
 
