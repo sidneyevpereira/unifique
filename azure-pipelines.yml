@@ -23,4 +23,5 @@ stages:
         containerregistrytype: 'Container Registry'
         dockerRegistryEndpoint: 'dockerhub'
         dockerComposeFile: '**/docker-compose.yml'
+        projectName: 'unifique'
         action: 'Run a Docker Compose command'
