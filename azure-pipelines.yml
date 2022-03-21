@@ -22,39 +22,25 @@ stages:
     pool:
       vmImage: $(vmImageName)    
     steps:
-    #- task: DockerCompose@0
-    #  displayName: Build services
-    #  inputs:
-    #    projectName: $(ProjetcName)         
-    #    containerregistrytype: 'Container Registry'
-    #    dockerRegistryEndpoint: 'dockerhub'
-    #    dockerComposeFile: '**/docker-compose.yml'        
-    #    additionalImageTags: $(tag)        
-    #    qualifyImageNames: true        
-    #    action: 'Build services'   
+    - task: DockerCompose@0
+      displayName: Build services
+      inputs:
+        projectName: $(ProjetcName)         
+        containerregistrytype: 'Container Registry'
+        dockerRegistryEndpoint: 'dockerhub'
+        dockerComposeFile: '**/docker-compose.yml'        
+        additionalImageTags: $(tag)        
+        qualifyImageNames: true        
+        action: 'Build services'   
         
-    #- task: DockerCompose@0
-    #  displayName: Push services
-    #  inputs:
-    #    projectName: $(ProjetcName)        
-    #    containerregistrytype: 'Container Registry'        
-    #    dockerRegistryEndpoint: 'dockerhub'        
-    #    dockerComposeFile: '**/docker-compose.yml'
-    #    additionalImageTags: $(tag)
-    #    qualifyImageNames: true
-    #    action: 'Push services' 
+    - task: DockerCompose@0
+      displayName: Push services
+      inputs:
+        projectName: $(ProjetcName)        
+        containerregistrytype: 'Container Registry'        
+        dockerRegistryEndpoint: 'dockerhub'        
+        dockerComposeFile: '**/docker-compose.yml'
+        additionalImageTags: $(tag)
+        qualifyImageNames: true
+        action: 'Push services' 
 
-    - task: DockerCompose@0
-      inputs:
-        containerregistrytype: 'Container Registry'
-        dockerRegistryEndpoint: 'dockerhub'
-        dockerComposeFile: '**/docker-compose.yml'
-        action: 'Build services'
-    
-    - task: DockerCompose@0
-      inputs:
-        containerregistrytype: 'Container Registry'
-        dockerRegistryEndpoint: 'dockerhub'
-        dockerComposeFile: '**/docker-compose.yml'
-        action: 'Push services'
-    
