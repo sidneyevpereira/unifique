@@ -2,9 +2,8 @@ trigger:
 - main
 
 variables:
-  vmImageName: 'ubuntu-latest'
-  tag: '$(Build.BuildId)'
-  ProjetcName: 'sidneyevpereira/unifique:$(Build.BuildId)'  
+  vmImageName: 'ubuntu-latest' 
+  ProjetcName: '$(Build.BuildId)'    
 
 stages:
 - stage: Build
@@ -14,7 +13,7 @@ stages:
     displayName: Build
     pool:
       vmImage: $(vmImageName)    
-    steps:    
+    steps: 
 
     - task: DockerCompose@0
       displayName: Build services
@@ -23,12 +22,7 @@ stages:
         dockerRegistryEndpoint: 'dockerhub'
         dockerComposeFile: '**/docker-compose.yml'
         dockerComposeFileArgs: 'DOCKER_BUILD_SOURCE='
-        projectName: '$(ProjetcName)'        
-        additionalImageTags: |
-          $(tag)
-          latest
-        includeSourceTags: true
-        includeLatestTag: true        
+        projectName: '$(ProjetcName)'                    
         action: 'Build services'
         
     - task: DockerCompose@0
@@ -38,12 +32,7 @@ stages:
         dockerRegistryEndpoint: 'dockerhub'
         dockerComposeFile: '**/docker-compose.yml'
         dockerComposeFileArgs: 'DOCKER_BUILD_SOURCE='
-        projectName: '$(ProjetcName)'        
-        additionalImageTags: |
-          $(tag)
-          latest
-        includeSourceTags: true
-        includeLatestTag: true       
+        projectName: '$(ProjetcName)'              
         action: 'Push services'  
-    
+
 

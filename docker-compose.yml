@@ -5,7 +5,7 @@ services:
   web:
     build:
       context: .
-      dockerfile: ./config/Dockerfile-web         
+      dockerfile: ./config/Dockerfile-web        
     image: sidneyevpereira/unifique:web        
     deploy:
       replicas: 1        
@@ -25,7 +25,7 @@ services:
   database:
     build:
       context: .
-      dockerfile: ./config/Dockerfile-database
+      dockerfile: ./config/Dockerfile-database        
     image: sidneyevpereira/unifique:database
     restart: unless-stopped
     hostname: cn-mariadb
@@ -46,8 +46,8 @@ services:
   phpmyadmin:
     build:
       context: .
-      dockerfile: ./config/Dockerfile-phpmyadmin
-    image: sidneyevpereira/unifique:phpmyadmin    
+      dockerfile: ./config/Dockerfile-phpmyadmin        
+    image: sidneyevpereira/unifique:phpmyadmin
     restart: always
     hostname: cn-phpmyadmin
     container_name: cn-phpmyadmin    
