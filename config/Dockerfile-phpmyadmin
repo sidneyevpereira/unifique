@@ -1,3 +1,2 @@
 FROM phpmyadmin
 RUN apt-get update && apt-get -y install
-

@@ -3,7 +3,10 @@ version: '3'
 # image dockerhub - https://hub.docker.com/_/nginx
 services:
   router:
-    image: nginx
+    build:
+      context: .
+      dockerfile: ./config/Dockerfile-router        
+    image: sidneyevpereira/unifique:router    
     ports:
       - '80:80'
     deploy:
