@@ -10,8 +10,7 @@
     echo "<p class='h1'>TESTE - Olá Mundo com conexão ao Mariadb</p><br/>";
     include 'conexao.php';   
     $query = sprintf("SELECT * FROM teste"); 
-    $result = $con->query($query);   
-    
+    $result = $con->query($query);    
   ?>  
   <div class="container">
     <table class="table">
