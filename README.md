@@ -19,19 +19,19 @@ Desenvolver um projeto usando docker, docker-compose, docker swarm
 -----------------------------------------------------------------------------------
 
 # php.ini
-** Relatar todos os erros  
+**Relatar todos os erros  
 - error_reporting = E_ALL ^ E_NOTICE ^ E_WARNING
 
-** Habilita visualização de erros - Ambiente de Desenvolvimento apenas
+**Habilita visualização de erros - Ambiente de Desenvolvimento apenas
 - display_errors = On
 
-** Habilita a gravação de logs no servidor
+**Habilita a gravação de logs no servidor
 - log_errors = On
 
-** Caminho fisico dos logs
+**Caminho fisico dos logs
 - error_log = /dev/stderr
 
-** Ajustando o limite de upload de arquivos
+**Ajustando o limite de upload de arquivos
 - upload_max_filesize = 64M
 
 -----------------------------------------------------------------------------------
