@@ -35,6 +35,10 @@ Ajustando o limite de upload de arquivos
 ## Mais Detalhes
 O Projeto contempla a parte de CI (Continuous Integration) / CD (Continuous Delivery) 
 
+![CI / CD](https://wac-cdn.atlassian.com/dam/jcr:b2a6d1a7-1a60-4c77-aa30-f3eb675d6ad6/ci%20cd%20asset%20updates%20.007.png?cdnVersion=278)
+
+Para construção/execução da pipeline usamos o Azure Devops (azure-pipeline.yml)
+
 As Image's do projeto se encontra-se atualmente no Container Registry do Docker Hub
 https://hub.docker.com/r/sidneyevpereira/unifique/tags
 
