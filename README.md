@@ -44,7 +44,7 @@ Obs:
 - Para incrementar o swarm-ingress segue abaixo o docker-compose.yml
 
 ------------------------------------------------------------------------------------
-version: '3'
+"version: '3'
 
 # image dockerhub - https://hub.docker.com/_/nginx
 services:
@@ -131,7 +131,7 @@ volumes:
 
 networks:
   unifique-net:
-    driver: overlay
+    driver: overlay"
 
 ------------------------------------------------------------------------------------
 
