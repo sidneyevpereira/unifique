@@ -1,0 +1,88 @@
+version: '3'
+
+# image dockerhub - https://hub.docker.com/_/nginx
+services:
+  router:
+    image: nginx
+    ports:
+      - '80:80'
+    deploy:
+      mode: global
+    networks:
+      - unifique-net
+
+  # image dockerhub - https://hub.docker.com/_/php
+  web:
+    build:
+      context: .
+      dockerfile: ./config/Dockerfile-web        
+    image: sidneyevpereira/unifique:web        
+    deploy:
+      replicas: 3        
+    restart: always
+    hostname: cn-php
+    container_name: cn-php    
+    volumes:      
+      - ./php-files/:/var/www/html/
+      - ./config/php.ini:/usr/local/etc/php/php.ini
+      - ./config/default.conf:/etc/apache2/sites-available/000-default.conf         
+    depends_on:
+      - database      
+    networks:
+      unifique-net:
+        aliases:
+          - unifique
+
+  # image dockerhub - https://hub.docker.com/_/mariadb/
+  database:
+    build:
+      context: .
+      dockerfile: ./config/Dockerfile-database        
+    image: sidneyevpereira/unifique:database
+    restart: unless-stopped
+    hostname: cn-mariadb
+    container_name: cn-mariadb
+    command:  "--character-set-server=utf8 --collation-server=utf8_general_ci --innodb-use-native-aio=0"
+    environment:
+      MYSQL_DATABASE: unifique_db
+      MYSQL_ROOT_PASSWORD: unifique@2022xxx
+    volumes:
+      - vol_unifique:/var/lib/mysql
+      - ./config/script.sql:/docker-entrypoint-initdb.d/script.sql
+    ports:
+      - "3306:3306"
+    networks:
+      - unifique-net 
+
+  # image dockerhub - https://hub.docker.com/_/phpmyadmin
+  phpmyadmin:
+    build:
+      context: .
+      dockerfile: ./config/Dockerfile-phpmyadmin        
+    image: sidneyevpereira/unifique:phpmyadmin
+    restart: always
+    hostname: cn-phpmyadmin
+    container_name: cn-phpmyadmin    
+    environment:
+      PMA_HOST: cn-mariadb
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1   
+      MYSQL_ROOT_PASSWORD: unifique@2022xxx
+    # Ajustar para pegar o maximo de upload dos arquivos  
+    volumes:
+      - ./config/uploads.ini:/usr/local/etc/php/conf.d/php-phpmyadmin.ini
+    ports:
+      - "8080:80"
+    depends_on:
+      - database
+    networks:
+      unifique-net:
+        aliases:
+          - phpmyadmin  
+  
+volumes:
+  vol_unifique:
+
+networks:
+  unifique-net:
+    driver: overlay
