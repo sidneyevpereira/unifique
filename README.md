@@ -22,7 +22,7 @@ Desenvolver um projeto usando docker, docker-compose, docker swarm
 Relatar todos os erros  
 error_reporting = E_ALL ^ E_NOTICE ^ E_WARNING
 
-Habilita visualização de erros - Ambiente de Desenvolvimento apenas
+Habilita visualização de erros | Ambiente de Desenvolvimento apenas
 display_errors = On
 
 Habilita a gravação de logs no servidor
