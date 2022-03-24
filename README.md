@@ -4,30 +4,30 @@ Projeto solicitado no dia 18/03/2022 com prazo de entrega definido em 24/03/2022
 
 Desenvolver um projeto usando docker, docker-compose, docker swarm
 
-1 - Subir um container  hello word básico com php 5.6;
+- 1 - Subir um container  hello word básico com php 5.6;
 
-2 - Detalhar as configurações utilizadas do php.ini;
+- 2 - Detalhar as configurações utilizadas do php.ini;
 
-3 - Subir um container com banco mysql/mariaDB que comunique com o container php;
+- 3 - Subir um container com banco mysql/mariaDB que comunique com o container php;
 
-4 - Criar o script da  pipeline para deploy; 
+- 4 - Criar o script da  pipeline para deploy; 
 
-5 - Fazer uma breve documentação de como usar o ambiente;
+- 5 - Fazer uma breve documentação de como usar o ambiente;
 
-6 - Subir os arquivos do projeto em um github e nos enviar o link;
+- 6 - Subir os arquivos do projeto em um github e nos enviar o link;
 
 -----------------------------------------------------------------------------------
 
 ## php.ini
--- Relatar todos os erros  
+Relatar todos os erros  
 error_reporting = E_ALL ^ E_NOTICE ^ E_WARNING
--- Habilita visualização de erros - Ambiente de Desenvolvimento apenas
+Habilita visualização de erros - Ambiente de Desenvolvimento apenas
 display_errors = On
--- Habilita a gravação de logs no servidor
+Habilita a gravação de logs no servidor
 log_errors = On
--- Caminho fisico dos logs
+Caminho fisico dos logs
 error_log = /dev/stderr
--- Ajustando o limite de upload de arquivos
+Ajustando o limite de upload de arquivos
 upload_max_filesize = 64M
 
 -----------------------------------------------------------------------------------
