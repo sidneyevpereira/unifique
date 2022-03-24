@@ -18,11 +18,11 @@ Desenvolver um projeto usando docker, docker-compose, docker swarm
 
 -----------------------------------------------------------------------------------
 
-## php.ini
+# php.ini
 Relatar todos os erros  
 error_reporting = E_ALL ^ E_NOTICE ^ E_WARNING
 
-Habilita visualização de erros | Ambiente de Desenvolvimento apenas
+Habilita visualização de erros - Ambiente de Desenvolvimento apenas
 display_errors = On
 
 Habilita a gravação de logs no servidor
@@ -36,7 +36,7 @@ upload_max_filesize = 64M
 
 -----------------------------------------------------------------------------------
 
-## Mais Detalhes
+# Mais Detalhes
 O Projeto contempla a parte de CI (Continuous Integration) / CD (Continuous Delivery) 
 
 ![CI / CD](https://wac-cdn.atlassian.com/dam/jcr:b2a6d1a7-1a60-4c77-aa30-f3eb675d6ad6/ci%20cd%20asset%20updates%20.007.png?cdnVersion=278)
