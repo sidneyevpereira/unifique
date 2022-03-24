@@ -18,6 +18,8 @@ services:
       - ./config/default.conf:/etc/apache2/sites-available/000-default.conf      
     ports:
     - "80:80"
+    depends_on:
+      - database      
     networks:
       - unifique-net  
 
@@ -61,6 +63,8 @@ services:
       - ./config/uploads.ini:/usr/local/etc/php/conf.d/php-phpmyadmin.ini
     ports:
       - "8080:80"
+    depends_on:
+      - database
     networks:
       - unifique-net  
   
