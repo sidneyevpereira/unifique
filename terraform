@@ -1,0 +1,113 @@
+// main.tf
+
+// Configuração do provider - AWS
+// Define a região da AWS a ser utilizada para a implantação dos recursos
+provider "aws" {
+  region = var.region
+}
+
+// Configurações do Terraform
+// Especifica o provider necessário e sua versão
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+  required_version = ">= 1.0.0"
+}
+
+// Recurso de Security Group
+// Cria um Security Group para o AWS WorkSpaces com as regras de entrada especificadas
+resource "aws_security_group" "workspaces_sg" {
+  name        = var.sg_name
+  description = "SG para AWS WorkSpaces"
+  vpc_id      = var.vpc_id
+
+  // Regras de entrada dinâmicas - Itera sobre a lista de regras definida no terraform.tfvars
+  dynamic "ingress" {
+    for_each = var.rules
+    content {
+      from_port   = ingress.value.port
+      to_port     = ingress.value.port
+      protocol    = ingress.value.protocol
+      cidr_blocks = ingress.value.source_ips
+    }
+  }
+
+  // Regra de saída permitindo todo o tráfego
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+// data.tf
+
+// Arquivo reservado para fontes de dados - Adicione fontes de dados aqui se necessário no futuro
+
+
+// outputs.tf
+
+// Output do ID do Security Group para referência e uso em outros módulos ou recursos
+output "security_group_id" {
+  description = "O ID do Security Group criado"
+  value       = aws_security_group.workspaces_sg.id
+}
+
+
+// variables.tf
+
+// Define a região da AWS a ser utilizada
+variable "region" {
+  description = "Região da AWS"
+  type        = string
+  default     = "us-east-1"
+}
+
+// Nome do Security Group
+variable "sg_name" {
+  description = "Nome do Security Group"
+  type        = string
+  default     = "workspaces-sg"
+}
+
+// ID da VPC onde o Security Group será criado
+variable "vpc_id" {
+  description = "ID da VPC"
+  type        = string
+}
+
+// Objeto de regras contendo porta, protocolo e IPs de origem
+// Cada regra pode definir múltiplos IPs de origem para uma única porta e protocolo
+variable "rules" {
+  description = "Lista de regras com porta, protocolo e IPs de origem"
+  type        = list(object({
+    port       = number
+    protocol   = string
+    source_ips = list(string)
+  }))
+  default = [
+    { port = 3389, protocol = "tcp", source_ips = ["192.168.0.1/32", "192.168.0.2/32"] },
+    { port = 4195, protocol = "tcp", source_ips = ["192.168.0.3/32"] },
+    { port = 4172, protocol = "udp", source_ips = ["192.168.0.4/32", "192.168.0.5/32"] },
+    { port = 8443, protocol = "tcp", source_ips = ["192.168.0.6/32"] }
+  ]
+}
+
+
+// terraform.tfvars
+
+// Exemplo de como definir valores para as variáveis
+region   = "us-east-1"
+sg_name  = "workspaces-sg"
+vpc_id   = "vpc-12345678"
+rules = [
+  { port = 3389, protocol = "tcp", source_ips = ["192.168.0.1/32", "192.168.0.2/32"] },
+  { port = 4195, protocol = "tcp", source_ips = ["192.168.0.3/32"] },
+  { port = 4172, protocol = "udp", source_ips = ["192.168.0.4/32", "192.168.0.5/32"] },
+  { port = 8443, protocol = "tcp", source_ips = ["192.168.0.6/32"] }
+]
