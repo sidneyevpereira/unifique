@@ -47,7 +47,21 @@ resource "aws_security_group" "workspaces_sg" {
 
 // data.tf
 
-// Arquivo reservado para fontes de dados - Adicione fontes de dados aqui se necessário no futuro
+// Obtém o ID da conta AWS e a região configurada
+data "aws_caller_identity" "current" {}
+
+data "aws_region" "current" {}
+
+output "account_id" {
+  description = "ID da conta AWS atual"
+  value       = data.aws_caller_identity.current.account_id
+}
+
+output "current_region" {
+  description = "Região configurada"
+  value       = data.aws_region.current.name
+}
+
 
 
 // outputs.tf
