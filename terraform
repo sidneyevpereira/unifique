@@ -16,6 +16,15 @@ terraform {
     }
   }
   required_version = ">= 1.0.0"
+
+  // Backend S3 - Armazenamento do state no S3
+  backend "s3" {
+    bucket = var.s3_bucket
+    key    = var.s3_key
+    region = var.region
+    dynamodb_table = var.dynamodb_table
+    encrypt        = true
+  }
 }
 
 // Recurso de Security Group
@@ -33,6 +42,7 @@ resource "aws_security_group" "workspaces_sg" {
       to_port     = ingress.value.port
       protocol    = ingress.value.protocol
       cidr_blocks = ingress.value.source_ips
+      description = ingress.value.description
     }
   }
 
@@ -61,7 +71,6 @@ output "current_region" {
   description = "Região configurada"
   value       = data.aws_region.current.name
 }
-
 
 
 // outputs.tf
@@ -95,21 +104,38 @@ variable "vpc_id" {
   type        = string
 }
 
-// Objeto de regras contendo porta, protocolo e IPs de origem
+// Objeto de regras contendo porta, protocolo, IPs de origem e descrição
 // Cada regra pode definir múltiplos IPs de origem para uma única porta e protocolo
 variable "rules" {
-  description = "Lista de regras com porta, protocolo e IPs de origem"
+  description = "Lista de regras com porta, protocolo, IPs de origem e descrição"
   type        = list(object({
     port       = number
     protocol   = string
     source_ips = list(string)
+    description = string
   }))
   default = [
-    { port = 3389, protocol = "tcp", source_ips = ["192.168.0.1/32", "192.168.0.2/32"] },
-    { port = 4195, protocol = "tcp", source_ips = ["192.168.0.3/32"] },
-    { port = 4172, protocol = "udp", source_ips = ["192.168.0.4/32", "192.168.0.5/32"] },
-    { port = 8443, protocol = "tcp", source_ips = ["192.168.0.6/32"] }
+    { port = 3389, protocol = "tcp", source_ips = ["192.168.0.1/32"], description = "RDP Access" },
+    { port = 4195, protocol = "tcp", source_ips = ["192.168.0.3/32"], description = "WorkSpaces Client" },
+    { port = 4172, protocol = "udp", source_ips = ["192.168.0.4/32"], description = "PCoIP UDP" },
+    { port = 8443, protocol = "tcp", source_ips = ["192.168.0.6/32"], description = "HTTPS Access" }
   ]
+}
+
+// Variáveis para o backend S3
+variable "s3_bucket" {
+  description = "Nome do bucket S3 onde o state será armazenado"
+  type        = string
+}
+
+variable "s3_key" {
+  description = "Caminho do arquivo state no S3"
+  type        = string
+}
+
+variable "dynamodb_table" {
+  description = "Tabela DynamoDB para controle de locking do state"
+  type        = string
 }
 
 
@@ -119,9 +145,12 @@ variable "rules" {
 region   = "us-east-1"
 sg_name  = "workspaces-sg"
 vpc_id   = "vpc-12345678"
+s3_bucket = "meu-bucket-terraform-state"
+s3_key    = "terraform/state.tfstate"
+dynamodb_table = "terraform-lock"
 rules = [
-  { port = 3389, protocol = "tcp", source_ips = ["192.168.0.1/32", "192.168.0.2/32"] },
-  { port = 4195, protocol = "tcp", source_ips = ["192.168.0.3/32"] },
-  { port = 4172, protocol = "udp", source_ips = ["192.168.0.4/32", "192.168.0.5/32"] },
-  { port = 8443, protocol = "tcp", source_ips = ["192.168.0.6/32"] }
+  { port = 3389, protocol = "tcp", source_ips = ["192.168.0.1/32"], description = "RDP Access" },
+  { port = 4195, protocol = "tcp", source_ips = ["192.168.0.3/32"], description = "WorkSpaces Client" },
+  { port = 4172, protocol = "udp", source_ips = ["192.168.0.4/32"], description = "PCoIP UDP" },
+  { port = 8443, protocol = "tcp", source_ips = ["192.168.0.6/32"], description = "HTTPS Access" }
 ]
