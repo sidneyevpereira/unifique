@@ -19,24 +19,31 @@ terraform {
 
   // Backend S3 - Armazenamento do state no S3
   backend "s3" {
-    bucket = var.s3_bucket
-    key    = var.s3_key
-    region = var.region
+    bucket         = var.s3_bucket
+    key            = var.s3_key
+    region         = var.region
     dynamodb_table = var.dynamodb_table
     encrypt        = true
   }
 }
 
 // Recurso de Security Group
-// Cria um Security Group para o AWS WorkSpaces com as regras de entrada especificadas
+// Cria um Security Group para o AWS WorkSpaces com as regras de entrada e saída especificadas
 resource "aws_security_group" "workspaces_sg" {
   name        = var.sg_name
   description = "SG para AWS WorkSpaces"
   vpc_id      = var.vpc_id
 
-  // Regras de entrada dinâmicas - Itera sobre a lista de regras definida no terraform.tfvars
+  // Tags associadas ao Security Group
+  tags = {
+    POC        = var.tag_poc
+    Workspace  = var.tag_workspace
+    Repositorio = var.tag_repositorio
+  }
+
+  // Regras de entrada dinâmicas
   dynamic "ingress" {
-    for_each = var.rules
+    for_each = var.rules_ingress
     content {
       from_port   = ingress.value.port
       to_port     = ingress.value.port
@@ -46,12 +53,16 @@ resource "aws_security_group" "workspaces_sg" {
     }
   }
 
-  // Regra de saída permitindo todo o tráfego
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+  // Regras de saída dinâmicas
+  dynamic "egress" {
+    for_each = var.rules_egress
+    content {
+      from_port   = egress.value.port
+      to_port     = egress.value.port
+      protocol    = egress.value.protocol
+      cidr_blocks = egress.value.destination_ips
+      description = egress.value.description
+    }
   }
 }
 
@@ -104,10 +115,28 @@ variable "vpc_id" {
   type        = string
 }
 
-// Objeto de regras contendo porta, protocolo, IPs de origem e descrição
-// Cada regra pode definir múltiplos IPs de origem para uma única porta e protocolo
-variable "rules" {
-  description = "Lista de regras com porta, protocolo, IPs de origem e descrição"
+// Tags do projeto
+variable "tag_poc" {
+  description = "Tag POC"
+  type        = string
+  default     = "AWS"
+}
+
+variable "tag_workspace" {
+  description = "Tag Workspace"
+  type        = string
+  default     = "Agências"
+}
+
+variable "tag_repositorio" {
+  description = "Tag Repositório"
+  type        = string
+  default     = "https://xxxx.com.br"
+}
+
+// Regras de entrada
+variable "rules_ingress" {
+  description = "Regras de entrada com porta, protocolo, IPs de origem e descrição"
   type        = list(object({
     port       = number
     protocol   = string
@@ -116,9 +145,22 @@ variable "rules" {
   }))
   default = [
     { port = 3389, protocol = "tcp", source_ips = ["192.168.0.1/32"], description = "RDP Access" },
-    { port = 4195, protocol = "tcp", source_ips = ["192.168.0.3/32"], description = "WorkSpaces Client" },
-    { port = 4172, protocol = "udp", source_ips = ["192.168.0.4/32"], description = "PCoIP UDP" },
-    { port = 8443, protocol = "tcp", source_ips = ["192.168.0.6/32"], description = "HTTPS Access" }
+    { port = 8443, protocol = "tcp", source_ips = ["192.168.0.2/32"], description = "HTTPS Access" }
+  ]
+}
+
+// Regras de saída
+variable "rules_egress" {
+  description = "Regras de saída com porta, protocolo, IPs de destino e descrição"
+  type        = list(object({
+    port          = number
+    protocol      = string
+    destination_ips = list(string)
+    description   = string
+  }))
+  default = [
+    { port = 80, protocol = "tcp", destination_ips = ["0.0.0.0/0"], description = "HTTP Outbound" },
+    { port = 443, protocol = "tcp", destination_ips = ["0.0.0.0/0"], description = "HTTPS Outbound" }
   ]
 }
 
@@ -148,9 +190,14 @@ vpc_id   = "vpc-12345678"
 s3_bucket = "meu-bucket-terraform-state"
 s3_key    = "terraform/state.tfstate"
 dynamodb_table = "terraform-lock"
-rules = [
+tag_poc = "AWS"
+tag_workspace = "Agências"
+tag_repositorio = "https://xxxx.com.br"
+rules_ingress = [
   { port = 3389, protocol = "tcp", source_ips = ["192.168.0.1/32"], description = "RDP Access" },
-  { port = 4195, protocol = "tcp", source_ips = ["192.168.0.3/32"], description = "WorkSpaces Client" },
-  { port = 4172, protocol = "udp", source_ips = ["192.168.0.4/32"], description = "PCoIP UDP" },
-  { port = 8443, protocol = "tcp", source_ips = ["192.168.0.6/32"], description = "HTTPS Access" }
+  { port = 8443, protocol = "tcp", source_ips = ["192.168.0.2/32"], description = "HTTPS Access" }
+]
+rules_egress = [
+  { port = 80, protocol = "tcp", destination_ips = ["0.0.0.0/0"], description = "HTTP Outbound" },
+  { port = 443, protocol = "tcp", destination_ips = ["0.0.0.0/0"], description = "HTTPS Outbound" }
 ]
