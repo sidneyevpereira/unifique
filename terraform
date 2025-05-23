@@ -463,3 +463,38 @@ for ip in "${AD_IPS[@]}"; do
   nmap -sU -p "$PORTAS_UDP_STR" --open -Pn "$ip" | grep -E "udp|open|filtered|closed"
 done
 
+-------------------------------------------------
+
+# IPs do Active Directory
+$adIps = @("10.87.188.148", "10.87.188.36")
+
+# Portas TCP utilizadas pelo Active Directory
+$tcpPorts = @(53, 88, 135, 137, 138, 139, 389, 445, 464, 636, 3268, 3269, 49152, 65535)
+
+# Portas UDP utilizadas pelo Active Directory
+$udpPorts = @(53, 88, 123, 137, 138, 389, 464)
+
+Write-Host "Iniciando teste de conectividade com servidores AD..." -ForegroundColor Cyan
+
+foreach ($ip in $adIps) {
+    Write-Host "`n==============================" -ForegroundColor Yellow
+    Write-Host "🔍 Testando IP: $ip" -ForegroundColor Green
+    Write-Host "==============================" -ForegroundColor Yellow
+
+    Write-Host "`n--- Testando TCP ---" -ForegroundColor Cyan
+    foreach ($port in $tcpPorts) {
+        $result = Test-NetConnection -ComputerName $ip -Port $port -WarningAction SilentlyContinue
+        if ($result.TcpTestSucceeded) {
+            Write-Host "✅ TCP $port: ABERTA" -ForegroundColor Green
+        } else {
+            Write-Host "❌ TCP $port: FECHADA ou FILTRADA" -ForegroundColor Red
+        }
+    }
+
+    Write-Host "`n--- Testando UDP (com nmap) ---" -ForegroundColor Cyan
+    $udpPortString = $udpPorts -join ","
+    $nmapResult = nmap -sU -p $udpPortString -Pn $ip
+    $nmapResult | Where-Object { $_ -match "udp" -or $_ -match "open" -or $_ -match "filtered" -or $_ -match "closed" } | ForEach-Object { Write-Host $_ }
+}
+
+
