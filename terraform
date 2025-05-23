@@ -428,3 +428,38 @@ output "public_ip" {
   description = "IP público da instância"
   value       = aws_instance.this.public_ip
 }
+-------------------------------------
+#!/bin/bash
+
+AD_IPS=("10.87.188.148" "10.87.188.36")
+
+# Portas TCP comumente usadas pelo Active Directory
+PORTAS_TCP=(
+  53 88 135 137 138 139 389 445 464 636 3268 3269 49152 65535
+)
+
+# Portas UDP comumente usadas pelo Active Directory
+PORTAS_UDP=(
+  53 88 123 137 138 389 464
+)
+
+echo "Iniciando testes de conectividade com servidores AD..."
+
+for ip in "${AD_IPS[@]}"; do
+  echo -e "\n=============================="
+  echo "🔍 Testando IP: $ip"
+  echo "=============================="
+
+  echo -e "\n--- Teste TCP (via /dev/tcp) ---"
+  for porta in "${PORTAS_TCP[@]}"; do
+    timeout 2 bash -c "echo > /dev/tcp/$ip/$porta" 2>/dev/null \
+      && echo "✅ TCP $porta: ABERTA" \
+      || echo "❌ TCP $porta: FECHADA ou FILTRADA"
+  done
+
+  echo -e "\n--- Teste UDP (via nmap) ---"
+  # Concatena as portas UDP em uma string separada por vírgula
+  PORTAS_UDP_STR=$(IFS=, ; echo "${PORTAS_UDP[*]}")
+  nmap -sU -p "$PORTAS_UDP_STR" --open -Pn "$ip" | grep -E "udp|open|filtered|closed"
+done
+
