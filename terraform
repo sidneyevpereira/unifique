@@ -332,3 +332,76 @@ output "workspace_id" {
 output "instance_profile_name" {
   value       = aws_iam_instance_profile.workspaces_profile.name
 }
+
+
+--------------------------
+main.tf
+
+resource "aws_instance" "this" {
+  ami                    = data.aws_ami.amazon_linux.id
+  instance_type          = "t3.micro"
+  subnet_id              = var.subnet_id
+  vpc_security_group_ids = [var.security_group_id]
+  key_name               = var.key_pair_name
+
+  tags = {
+    Name = "terraform-ec2-t3micro"
+  }
+}
+
+data "aws_ami" "amazon_linux" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+  }
+
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+}
+
+----------------------
+variables.tf
+
+variable "vpc_id" {
+  type        = string
+  description = "ID da VPC onde a instância será criada"
+}
+
+variable "subnet_id" {
+  type        = string
+  description = "ID da subnet onde a instância será criada"
+}
+
+variable "key_pair_name" {
+  type        = string
+  description = "Nome do par de chaves SSH"
+}
+
+variable "security_group_id" {
+  type        = string
+  description = "ID do Security Group"
+}
+
+--------------------
+terraform.tfvars
+vpc_id            = "vpc-0abc123def4567890"
+subnet_id         = "subnet-0abc123def4567890"
+key_pair_name     = "minha-chave-ec2"
+security_group_id = "sg-0123456789abcdef0"
+
+--------------------
+outputs.tf
+output "instance_id" {
+  description = "ID da instância EC2"
+  value       = aws_instance.this.id
+}
+
+output "public_ip" {
+  description = "IP público da instância"
+  value       = aws_instance.this.public_ip
+}
